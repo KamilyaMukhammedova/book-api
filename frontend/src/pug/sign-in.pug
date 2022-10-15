@@ -1,0 +1,33 @@
+form.needs-validation(novalidate='')#sign-in-form
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="user-name-sign-in") Name *
+		.col-sm-9
+			input#user-name-sign-in.form-control(type='text')
+			.invalid-feedback
+				| The field is required *.
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="user-first-name") First name
+		.col-sm-9
+			input#user-first-name.form-control(type='text')
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="password-sign-in") Password *
+		.col-sm-9
+			input#password-sign-in.form-control(type='password')
+			.invalid-feedback
+				| The field is required *.
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="password-repeat") Password repeat *
+		.col-sm-9
+			input#password-repeat.form-control(type='password')
+			.invalid-feedback#errorPasswordRepeat
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="age") Age
+		.col-sm-2
+			input#age.form-control(type='number', min="0")
+	button.btn.btn-warning.w-100.mt-5#sign-in-submit(type="submit", disabled='') Sign in
+
+
+
+
+
+

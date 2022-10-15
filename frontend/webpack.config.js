@@ -34,6 +34,10 @@ module.exports = {
       template: path.resolve(__dirname, 'src', 'pug', 'main-page.pug'),
       filename: "index.html",
     }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src', 'pug', 'new-book-page.pug'),
+      filename: "new-book-page.html",
+    }),
     new MiniCssExtractPlugin({
       filename: 'index.[contenthash].css'
     }),
@@ -87,6 +91,18 @@ module.exports = {
           options: {
             presets: ["@babel/preset-env",]
           }
+        }
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        include: path.resolve(__dirname, './node_modules/bootstrap-icons/font/fonts'),
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'webfonts',
+            publicPath: '../webfonts',
+          },
         }
       }
     ]

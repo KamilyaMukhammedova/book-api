@@ -1,0 +1,9 @@
+mixin modalWindow(modalId, closeId, title)
+	.modal-window(id=modalId)
+		.modal-window__content
+			.modal-window__close-btn-div
+				button.modal-window__btn-icon.btn.btn-secondary(id=closeId)
+					i.bi.bi-x-lg
+			.modal-window__title #{title}
+			if block
+				block

@@ -1,0 +1,20 @@
+form.needs-validation(novalidate='')#log-in-form
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="user-name-log-in") Name *
+		.col-sm-9
+			input#user-name-log-in.form-control(type='text')
+			.invalid-feedback
+				| The field is required *.
+	.row.mb-4
+		label.col-sm-3.col-form-label(for="password-log-in") Password *
+		.col-sm-9
+			input#password-log-in.form-control(type='password')
+			.invalid-feedback
+				| The field is required *.
+	button.btn.btn-warning.w-100.mt-5#log-in-submit(type="submit", disabled='') Log in
+
+
+
+
+
+
