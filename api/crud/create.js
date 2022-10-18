@@ -8,8 +8,11 @@ module.exports = (req, res) => {
   const user = db.get('users').find({ token }).value()
   if (!user) return utils.error(res, 403, 'Access is denied')
   
-  const { name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage } = req.body
-  const permisbleKeys = 'name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage'.split(', ')
+  const { name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage, img, description } = req.body
+  const permisbleKeys = 'name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage,' +
+    ' img, description'.split(', ')
+
+  console.log(req.body);
 
   const keys = Object.keys(req.body)
   const invalid = keys.filter(k => !permisbleKeys.includes(k))
@@ -19,8 +22,12 @@ module.exports = (req, res) => {
 
   if (!name) return utils.error(res, 400, '`name` attribute is required')
   if (!author) return utils.error(res, 400, '`author` attribute is required')
+  if (!description) return utils.error(res, 400, '`description` attribute is required')
 
   if (typeof name !== 'string') return utils.error(res, 400, 'name attribute should be type `string`')
+  if (img && typeof img !== 'string') return utils.error(res, 400, 'img attribute should be type `string`')
+  if (typeof description !== 'string') return utils.error(res, 400, 'description should be type' +
+    ' `string`')
   if (typeof author !== 'string') return utils.error(res, 400, 'author attribute should be type `string`')
   if (isFavorite && typeof isFavorite !== 'boolean') return utils.error(res, 400, 'isFavorite attribute should be type `boolean`')
   if (publishYear && typeof publishYear !== 'number') return utils.error(res, 400, 'publishYear attribute should be type `number`')
@@ -32,6 +39,7 @@ module.exports = (req, res) => {
   const newBook = { 
     name,
     author,
+    img: img || null,
     id: shortid.generate(),
     isFavorite: isFavorite || false,
   }
@@ -40,7 +48,8 @@ module.exports = (req, res) => {
     publishHouse: publishHouse || null, 
     pagesNumber: pagesNumber || 0,
     genres: genres || [],
-    originalLanguage: originalLanguage || null
+    originalLanguage: originalLanguage || null,
+    description: description || null
   }
 
   db.get('books').push(newBook).write()

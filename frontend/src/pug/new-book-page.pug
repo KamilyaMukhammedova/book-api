@@ -1,4 +1,91 @@
 extends page-template
 
 block content
-	button.btn.btn-primary new book
+	.container
+		.col-8.mt-5
+			h2.mb-4 Add new book
+			form#new-book-form
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-name") Name *
+					.col-sm-9
+						input#book-name.form-control(type='text')
+						.invalid-feedback
+							| The field is required *.
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-author") Author *
+					.col-sm-9
+						input#book-author.form-control(type='text')
+						.invalid-feedback
+							| The field is required *.
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-publish-house") Publish house
+					.col-sm-9
+						input#book-publish-house.form-control(type='text')
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-is-favorite") Is favorite
+					.col-sm-9
+						input#book-is-favorite.form-check-input(type='checkbox')
+				.row.mb-4
+					label.col-sm-3.col-form-label Genre
+					.col-sm-9
+						.dropend
+							button.btn.btn-secondary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+								| Choose genre
+							ul.dropdown-menu
+								li.row
+									label.col-9(for="genre-fantasy") Fantasy
+									.col-3
+										input#genre-fantasy.form-check-input.book-genre(type='checkbox', name="Fantasy")
+								li.row
+									label.col-9(for="genre-mystery") Mystery
+									.col-3
+										input#genre-mystery.form-check-input.book-genre(type='checkbox', name="Mystery")
+								li.row
+									label.col-9(for="genre-romance") Romance
+									.col-3
+										input#genre-romance.form-check-input.book-genre(type='checkbox', name="Romance")
+								li.row
+									label.col-9(for="genre-classics") Classics
+									.col-3
+										input#genre-classics.form-check-input.book-genre(type='checkbox', name="Classics")
+								li.row
+									label.col-9(for="genre-comic") Comic
+									.col-3
+										input#genre-comic.form-check-input.book-genre(type='checkbox', name="Comic")
+								li.row
+									label.col-9(for="genre-horror") Horror
+									.col-3
+										input#genre-horror.form-check-input.book-genre(type='checkbox', name="Horror")
+								li.row
+									label.col-9(for="genre-other") Other
+									.col-3
+										input#genre-other.form-check-input.book-genre(type='checkbox', name="Other")
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-publish-year") Publish year
+					.col-sm-2
+						input#book-publish-year.form-control(type='number', min="0")
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-pages-number") Pages number
+					.col-sm-2
+						input#book-pages-number.form-control(type='number', min="0")
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-original-lang") Original language
+					.col-sm-9
+						input#book-original-lang.form-control(type='text')
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-img") Image url
+					.col-sm-9
+						input#book-img.form-control(type='text')
+				.row.mb-4
+					label.col-sm-3.col-form-label(for="book-description") Description *
+					.col-sm-9
+						textarea#book-description.form-control.textarea-description
+						.invalid-feedback
+							| The field is required *.
+				button.btn.btn-warning.w-100.mt-5#new-book-submit(type="submit", disabled='') Save
+
+
+
+
+
+

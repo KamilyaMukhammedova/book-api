@@ -13,6 +13,7 @@ import './pug/one-book-info-page.pug';
 import './js/log-out';
 import './js/log-in';
 import './js/one-book-info';
+import './js/add-new-book';
 
 
 
