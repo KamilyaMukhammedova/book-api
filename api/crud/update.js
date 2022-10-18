@@ -7,8 +7,9 @@ module.exports = (req, res) => {
   if (!user) return utils.error(res, 403, 'Access is denied')
   
   const { id } = req.params
-  const { name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage } = req.body
-  const permisbleKeys = 'name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage'.split(', ')
+  const { name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage, img, description } = req.body
+  const permisbleKeys = 'name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres,' +
+    ' originalLanguage, img, description'.split(', ')
 
   const book = db.get('books').find({ id }).value()
   const book_expanded = db.get('books_expanded').find({ id }).value()
@@ -21,10 +22,13 @@ module.exports = (req, res) => {
   }
 
   if (name && typeof name !== 'string') return utils.error(res, 400, 'name attribute should be type `string`')
+  if (img && typeof img !== 'string') return utils.error(res, 400, 'img attribute should be type `string`')
+  if (description && typeof description !== 'string') return utils.error(res, 400, 'description attribute should be type `string`')
   if (author && typeof author !== 'string') return utils.error(res, 400, 'author attribute should be type `string`')
   if (isFavorite && typeof isFavorite !== 'boolean') return utils.error(res, 400, 'isFavorite attribute should be type `boolean`')
   if (publishYear && typeof publishYear !== 'number') return utils.error(res, 400, 'publishYear attribute should be type `number`')
-  if (publishHouse && typeof publishHouse !== 'boolean') return utils.error(res, 400, 'publishHouse attribute should be type `string`')
+  if (publishHouse && typeof publishHouse !== 'string') return utils.error(res, 400, 'publishHouse attribute should be' +
+    ' type `string`')
   if (pagesNumber && typeof pagesNumber !== 'number') return utils.error(res, 400, 'pagesNumber attribute should be type `number`')
   if (genres && !Array.isArray(genres)) return utils.error(res, 400, 'genres attribute should be type `array`')
   if (originalLanguage && typeof originalLanguage !== 'string') return utils.error(res, 400, 'originalLanguage attribute should be type `string`')
@@ -32,6 +36,7 @@ module.exports = (req, res) => {
   const updatedItem = { ...book_expanded, ...req.body }
   const not_expanded = Object.assign({}, updatedItem)
   delete not_expanded['publishYear']
+  delete not_expanded['description']
   delete not_expanded['publishHouse']
   delete not_expanded['pagesNumber']
   delete not_expanded['genres']

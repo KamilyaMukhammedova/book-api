@@ -55,9 +55,12 @@ const getCard = async () => {
           card.append(linkDiv, cardFooter);
 
 
-          linkDiv.addEventListener('click', (event) => {
-            localStorage.setItem('bookId', JSON.stringify(event.currentTarget.id));
-            window.location.replace(`http://localhost:3000/one-book-info-page.html?book_id=${event.currentTarget.id}`)
+          linkDiv.addEventListener('click', () => {
+            window.location.replace(`http://localhost:3000/one-book-info-page.html?book_id=${book.id}`);
+          });
+
+          editBtn.addEventListener('click', () => {
+            window.location.replace(`http://localhost:3000/new-book-page.html?edit_book=${book.id}`);
           });
 
           removeBtn.addEventListener('click', async () => {
