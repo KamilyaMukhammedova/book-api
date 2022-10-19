@@ -1,5 +1,6 @@
 import {onFieldValidator, onUserPasswordRepeatValidator} from "./ fields-validator";
 import {snackbarError, snackbarSuccess} from "./snackbar";
+import {btnSpinner} from "./main";
 
 const form = document.getElementById('sign-in-form');
 const userName = document.getElementById('user-name-sign-in');
@@ -13,6 +14,7 @@ const signInModal = document.getElementById('sign-in-modal');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  submitBtn.innerHTML = btnSpinner;
 
   const userData = {
     username: userName.value,
@@ -31,6 +33,7 @@ form.addEventListener('submit', async (e) => {
     });
 
     if (response.ok) {
+      submitBtn.innerText = 'Sign in';
       const data = await response.json();
       localStorage.setItem("userData", JSON.stringify({
         name: data.data.username,
@@ -43,6 +46,7 @@ form.addEventListener('submit', async (e) => {
       }, 2200);
 
     } else {
+      submitBtn.innerText = 'Sign in';
       snackbarError('Sign in', 'User name already exists. Try again!');
       console.error('Error. Try again!');
     }

@@ -1,5 +1,6 @@
 import {onFieldValidator} from "./ fields-validator";
 import {snackbarError, snackbarSuccess} from "./snackbar";
+import {btnSpinner} from "./main";
 
 const form = document.getElementById('log-in-form');
 const userName = document.getElementById('user-name-log-in');
@@ -9,6 +10,7 @@ const logInModal = document.getElementById('log-in-modal');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  submitBtn.innerHTML = btnSpinner;
 
   const userData = {
     username: userName.value,
@@ -25,6 +27,7 @@ form.addEventListener('submit', async (e) => {
     });
 
     if (response.ok) {
+      submitBtn.innerText = 'Log in';
       const data = await response.json();
       localStorage.setItem("userData", JSON.stringify({
         name: data.data.username,
@@ -37,6 +40,7 @@ form.addEventListener('submit', async (e) => {
       }, 2200);
 
     } else {
+      submitBtn.innerText = 'Log in';
       snackbarError('Log in', `User name or password are wrong. Try again!`);
       console.error('Error. Try again');
     }

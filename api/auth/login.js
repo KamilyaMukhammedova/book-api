@@ -3,7 +3,6 @@ const utils = require('../utils')
 
 module.exports = (req, res) => {
   const { username, password } = req.body
-  console.log(req.body)
   if (!username) return utils.error(res, 400, 'username attribute is required')
   if (!password) return utils.error(res, 400, 'password attribute is required')
 

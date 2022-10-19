@@ -1,13 +1,20 @@
 import {getLocalStorage} from "./local-storage";
 import {snackbarError, snackbarSuccess} from "./snackbar";
 
+export const btnSpinner = `
+         <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+         </div>
+       `;
 const localStorageUserData = JSON.parse(localStorage.getItem('userData'));
 const booksDiv = document.getElementById('booksDiv');
 const url = window.location.href;
+const loading = document.getElementById('loading');
 
 const getCards = async () => {
   if (localStorageUserData && (url === 'http://localhost:3000/index.html' || url === 'http://localhost:3000/')) {
     booksDiv.innerHTML = '';
+    loading.style.display = 'block';
 
     try {
       const response = await fetch('http://localhost:1717/books', {
@@ -51,9 +58,7 @@ const getCards = async () => {
           removeBtn.innerHTML = `<i class="bi bi-trash"></i>`;
 
           cardFooter.append(favoriteBtn, removeBtn, editBtn);
-
           card.append(linkDiv, cardFooter);
-
 
           linkDiv.addEventListener('click', () => {
             window.location.replace(`http://localhost:3000/one-book-info-page.html?book_id=${book.id}`);
@@ -64,7 +69,6 @@ const getCards = async () => {
           });
 
           removeBtn.addEventListener('click', async () => {
-            console.log(book.id);
             try {
               const response = await fetch(`http://localhost:1717/books/delete/${book.id}`, {
                 method: 'DELETE',
@@ -112,19 +116,23 @@ const getCards = async () => {
           booksDiv.append(card);
         });
 
-        console.log(booksData);
+        loading.style.display = 'none';
       } else {
+        loading.style.display = 'none';
+        booksDiv.innerHTML = `
+                       <div class="alert alert-danger mt-5 p-4" role="alert">
+                          <h1>Error! Book's fetching is failed!</h1>
+                       </div>`;
         console.error('Error. Try again');
       }
     } catch (e) {
+      loading.style.display = 'none';
       console.error('Error: ', e.message);
     }
-
   }
-
 };
 
-const getAll = async () => {
+const getPageContent = async () => {
   if(!localStorageUserData) {
     booksDiv.innerHTML = '';
     getLocalStorage();
@@ -134,17 +142,12 @@ const getAll = async () => {
   }
 };
 
-// window.addEventListener('DOMContentLoaded', async () => {
-//   // if(!localStorageUserData) {
-//   //   booksDiv.innerHTML = '';
-//   // } else {
-//   //   getLocalStorage();
-//   //   await getCards();
-//   // }
-//
-// });
+getPageContent();
 
-getAll();
+
+
+
+
 
 
 

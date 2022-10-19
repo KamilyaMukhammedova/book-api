@@ -1,11 +1,13 @@
 import {onFieldValidator} from "./ fields-validator";
 import {snackbarError, snackbarSuccess} from "./snackbar";
+import {btnSpinner} from "./main";
 
 const url = window.location.href;
 const localStorageUserData = JSON.parse(localStorage.getItem('userData'));
 
 const urlParams = new URLSearchParams(window.location.search);
 const bookId = urlParams.get('edit_book');
+const loading = document.getElementById('loading-book-data-form');
 
 const form = document.getElementById('new-book-form');
 const bookName = document.getElementById('book-name');
@@ -26,6 +28,7 @@ let bookDataFromApi = '';
 
 const getBookData = async () => {
   try {
+    loading.style.display = 'block';
     const response = await fetch(`http://localhost:1717/books/${bookId}`, {
       method: 'GET',
       headers: {
@@ -35,10 +38,11 @@ const getBookData = async () => {
     });
 
     if (response.ok) {
+      loading.style.display = 'none';
       bookDataFromApi = await response.json();
-
-      console.log(bookDataFromApi);
     } else {
+      loading.style.display = 'none';
+      snackbarError(`Fetching book's data`);
       console.error('Error. Try again');
     }
   } catch (e) {
@@ -65,7 +69,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       await getBookData();
 
       submitBtn.disabled = false;
-
       bookName.value = bookDataFromApi.name;
       bookAuthor.value = bookDataFromApi.author;
       bookIsFavorite.checked = bookDataFromApi.isFavorite;
@@ -82,9 +85,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      submitBtn.innerHTML = btnSpinner;
 
       const genresArray = [];
       bookGenres.forEach(genre => {
@@ -105,8 +108,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         img: bookImgUrl.value,
         description: bookDescription.value,
       };
-
-      console.log(bookData);
 
       try {
         let apiUrl = '';
@@ -133,8 +134,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (response.ok) {
+          submitBtn.innerText = 'Save';
           snackbarSuccess(snackbarText, true);
         } else {
+          submitBtn.innerText = 'Save';
           snackbarError(snackbarText);
           console.error('Error. Try again');
         }
@@ -142,8 +145,5 @@ window.addEventListener('DOMContentLoaded', async () => {
         console.error(e);
       }
     });
-
-
   }
-
 });

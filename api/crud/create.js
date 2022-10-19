@@ -12,8 +12,6 @@ module.exports = (req, res) => {
   const permisbleKeys = 'name, author, isFavorite, publishYear, publishHouse, pagesNumber, genres, originalLanguage,' +
     ' img, description'.split(', ')
 
-  console.log(req.body);
-
   const keys = Object.keys(req.body)
   const invalid = keys.filter(k => !permisbleKeys.includes(k))
   if (invalid.length) {
