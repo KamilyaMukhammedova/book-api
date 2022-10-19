@@ -1,3 +1,6 @@
+import {onFieldValidator} from "./ fields-validator";
+import {snackbarError, snackbarSuccess} from "./snackbar";
+
 const url = window.location.href;
 const localStorageUserData = JSON.parse(localStorage.getItem('userData'));
 
@@ -20,20 +23,6 @@ const bookGenres = document.querySelectorAll('.book-genre');
 
 const title = document.getElementById('book-form-title');
 let bookDataFromApi = '';
-
-const onFieldListener = (eventName, field1, field2, field3) => {
-  field1?.addEventListener(eventName, (event) => {
-    if (event.target.value === '') {
-      field1.classList.add('is-invalid');
-      submitBtn.disabled = true;
-    } else {
-      field1.classList.remove('is-invalid');
-      if (field2.value !== '' && field3.value !== '') {
-        submitBtn.disabled = false;
-      }
-    }
-  });
-};
 
 const getBookData = async () => {
   try {
@@ -61,14 +50,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (localStorageUserData &&
     (url === 'http://localhost:3000/new-book-page.html' || url === `http://localhost:3000/new-book-page.html?edit_book=${bookId}`))
   {
-    onFieldListener('blur', bookName, bookAuthor, bookDescription);
-    onFieldListener('input', bookName, bookAuthor, bookDescription);
+    onFieldValidator('blur',  submitBtn, bookName, bookAuthor, bookDescription);
+    onFieldValidator('input', submitBtn, bookName, bookAuthor, bookDescription);
 
-    onFieldListener('blur', bookAuthor, bookName, bookDescription);
-    onFieldListener('input', bookAuthor, bookName, bookDescription);
+    onFieldValidator('blur',  submitBtn, bookAuthor, bookName, bookDescription);
+    onFieldValidator('input',  submitBtn, bookAuthor, bookName, bookDescription);
 
-    onFieldListener('blur', bookDescription, bookName, bookAuthor);
-    onFieldListener('input', bookDescription, bookName, bookAuthor);
+    onFieldValidator('blur', submitBtn, bookDescription, bookName, bookAuthor);
+    onFieldValidator('input', submitBtn, bookDescription, bookName, bookAuthor);
 
     url === 'http://localhost:3000/new-book-page.html' ? title.innerText = 'Add new book' : title.innerText = 'Edit book';
 
@@ -122,13 +111,16 @@ window.addEventListener('DOMContentLoaded', async () => {
       try {
         let apiUrl = '';
         let methodName = '';
+        let snackbarText = '';
 
         if(url === 'http://localhost:3000/new-book-page.html') {
           apiUrl = 'http://localhost:1717/books/create';
           methodName = 'POST';
+          snackbarText = 'New book creating';
         } else {
           apiUrl = `http://localhost:1717/books/update/${bookId}`;
           methodName = 'PUT';
+          snackbarText = 'Book editing';
         }
 
         const response = await fetch(apiUrl, {
@@ -141,8 +133,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (response.ok) {
-          window.location.replace('http://localhost:3000/index.html');
+          snackbarSuccess(snackbarText, true);
         } else {
+          snackbarError(snackbarText);
           console.error('Error. Try again');
         }
       } catch(e) {

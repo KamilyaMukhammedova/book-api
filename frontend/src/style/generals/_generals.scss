@@ -39,3 +39,11 @@ a {
   width: 2em;
   height: 2em;
 }
+
+.dropdown-menu {
+  --bs-dropdown-min-width: 15rem;
+}
+
+textarea.form-control {
+  min-height: calc(1.5em + 18.75rem + 2px);
+}

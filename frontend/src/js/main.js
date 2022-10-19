@@ -1,12 +1,12 @@
 import {getLocalStorage} from "./local-storage";
+import {snackbarError, snackbarSuccess} from "./snackbar";
 
 const localStorageUserData = JSON.parse(localStorage.getItem('userData'));
 const booksDiv = document.getElementById('booksDiv');
 const url = window.location.href;
 
-const getCard = async () => {
+const getCards = async () => {
   if (localStorageUserData && (url === 'http://localhost:3000/index.html' || url === 'http://localhost:3000/')) {
-    const userToken = localStorageUserData.token;
     booksDiv.innerHTML = '';
 
     try {
@@ -14,14 +14,14 @@ const getCard = async () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-Auth': userToken
+          'X-Auth': localStorageUserData.token
         }
       });
 
       if (response.ok) {
         const booksData = await response.json();
 
-        booksData.forEach(book => {
+        booksData.reverse().forEach(book => {
           const card = document.createElement('div');
           card.className = 'col card';
 
@@ -70,13 +70,15 @@ const getCard = async () => {
                 method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json',
-                  'X-Auth': userToken
+                  'X-Auth': localStorageUserData.token
                 }
               });
 
               if (response.ok) {
-                await getCard();
+                await getCards();
+                snackbarSuccess(`"${book.name}" removing`, false);
               } else {
+                snackbarError(`"${book.name}" removing`, 'Try again!');
                 console.error('Error! Try again');
               }
             } catch (e) {
@@ -91,13 +93,15 @@ const getCard = async () => {
                 body: JSON.stringify({'isFavorite': !book.isFavorite}),
                 headers: {
                   'Content-Type': 'application/json',
-                  'X-Auth': userToken
+                  'X-Auth': localStorageUserData.token
                 }
               });
 
               if (response.ok) {
-                await getCard();
+                await getCards();
+                snackbarSuccess(`"${book.name}" added in favorites`, false);
               } else {
+                snackbarError(`"${book.name}" added in favorites`, 'Try again!');
                 console.error('Error. Try again.');
               }
             } catch (e) {
@@ -121,9 +125,24 @@ const getCard = async () => {
 };
 
 const getAll = async () => {
-  getLocalStorage();
-  await getCard();
+  if(!localStorageUserData) {
+    booksDiv.innerHTML = '';
+    getLocalStorage();
+  } else {
+    getLocalStorage();
+    await getCards();
+  }
 };
+
+// window.addEventListener('DOMContentLoaded', async () => {
+//   // if(!localStorageUserData) {
+//   //   booksDiv.innerHTML = '';
+//   // } else {
+//   //   getLocalStorage();
+//   //   await getCards();
+//   // }
+//
+// });
 
 getAll();
 

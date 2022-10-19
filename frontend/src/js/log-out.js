@@ -1,12 +1,8 @@
-import {getLocalStorage} from "./local-storage";
+import {snackbarSuccess} from "./snackbar";
 
 const logOut = document.getElementById('log-out');
 
 logOut.addEventListener('click', () => {
-
   localStorage.removeItem('userData');
-
-  getLocalStorage();
-
-
+  snackbarSuccess('Log out', true);
 });
