@@ -19,29 +19,18 @@ document.addEventListener('DOMContentLoaded',  async () => {
 
       if (response.ok) {
         const bookData = await response.json();
-        console.log(bookData);
 
         const card = document.createElement('div');
-        card.className = 'card col-9';
-
+        card.className = 'card col-7 mt-5 shadow p-3';
+        const img = bookData.img ? bookData.img : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-OmTQ0NVjb0MJC0wlCLmO5OGConYN8B32_w&usqp=CAU';
         card.innerHTML = `
-              <div class="row g-0">
-                 <div class="col-md-4">
-                   <img src="${bookData.img}" class="img-fluid rounded-start" alt="${bookData.name}">
-                 </div>
-               <div class="col-md-8">
-                 <div class="card-body">
-                     <h5 class="card-title">${bookData.name}</h5>
-                     <p class="card-text">${bookData.author}</p>
-                     <p class="card-text">${bookData.description}</p>
-                     <p class="card-text">
-                       <small class="text-muted">${bookData.publishYear} | ${bookData.publishHouse}</small>
-                     </p>
-                 </div>
-               </div>
-              </div>
+             <img src="${img}" class="card-img-top h-auto" alt="${bookData.name}">
+             <div class="card-body">
+                <h2 class="card-title">" ${bookData.name} "</h2>
+                <h5 class="card-title mb-4 text-warning">${bookData.author}</h5>
+                <p class="card-text">${bookData.description}</p>
+             </div>
         `;
-
         bookFullInfo.append(card);
       } else {
         console.error('Error. Try again');
@@ -49,7 +38,5 @@ document.addEventListener('DOMContentLoaded',  async () => {
     } catch (e) {
       console.error('Error: ', e.message);
     }
-
   }
-
 });

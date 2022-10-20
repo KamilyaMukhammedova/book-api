@@ -8,7 +8,7 @@ export const snackbarSuccess = (text, redirect) => {
   `;
   setTimeout(() => {
     snackbar.classList.remove('snackbar_show');
-    if (redirect) window.location.replace('http://localhost:3000/index.html');
+    if (redirect) window.location.assign('http://localhost:3000/index.html');
   }, 2000);
 };
 
